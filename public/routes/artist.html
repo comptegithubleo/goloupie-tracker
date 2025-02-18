@@ -1,0 +1,55 @@
+{{ define "artist" }}
+{{ template "head" .}}
+</head>
+{{ template "header" .}}
+
+<div class="flex flex-col mx-5 md:mx-32 gap-5 md:gap-10">
+
+    <a href="/"
+        class="inline-flex items-center mr-auto border border-purple-300 px-3 py-2 rounded-md text-purple-500 hover:bg-purple-50">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            class="size-4 md:size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18">
+            </path>
+        </svg>
+        <span class="ml-1 font-bold text-sm md:text-lg">Back to menu</span>
+    </a>
+
+    <div class="relative flex h-32 md:h-60 -mx-5 md:mx-0">
+        <img class="object-cover brightness-50 min-w-full min-h-full rounded-t-sm md:rounded-t-xl" src={{.Image}}>
+        <h1
+            class="absolute font-lalezar font-weight-extrablack text-4xl md:text-6xl lg:text-7xl bottom-5 left-8 text-white shadow-white">
+            {{.Name}}</h1>
+    </div>
+
+    <div class="flex flex-wrap justify-between items-center">
+        <div class="w-44 mx-8 my-2 md:my-6">
+            <p class="font-bold md:text-xl mb-2 dark:text-white">Creation date:</p>
+            <p class="text-gray-700 text-sm md:text-base mb-2 dark:text-slate-300">{{.CreationDate}}</p>
+        </div>
+        <div class="w-44 mx-8 my-2 md:my-6">
+            <p class="font-bold md:text-xl mb-2 dark:text-white">First Album:</p>
+            <p class="text-gray-700 text-sm md:text-base mb-2 dark:text-slate-300">{{.FirstAlbum}}</p>
+        </div>
+        <div class="w-auto md:w-72 mx-8 my-2 md:my-6">
+            <p class="mb-2 font-bold md:text-xl dark:text-white">Members:</p>
+            <div class="flex flex-wrap mb-2 gap-x-9">
+                {{range .Members}}
+                <p class="text-gray-700 text-sm md:text-base mb-2 dark:text-slate-300">{{.}}</p>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-8 md:my-6">
+        <p class="font-bold md:text-xl mb-2 dark:text-white">Concerts:</p>
+        <p class="mb-2 text-sm md:text-base dark:text-slate-300">Please be patient, one API call per second ...</p>
+    </div>
+    
+</div>
+
+{{ template "map" .}}
+
+{{ template "footer" }}
+
+{{ end }}

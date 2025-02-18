@@ -1,0 +1,85 @@
+{{ define "map" }}
+<script src="/public/openlayers/ol.js"></script>
+<link rel="stylesheet" href="/public/openlayers/ol.css">
+
+<div id="map" class="w-full md:w-auto md:mx-32 h-72 md:h-96"></div>
+<div id="popups"></div>
+
+<script type="text/javascript">
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                wrapX: false,
+                noWrap: true
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([37.41, 8.82]),
+            zoom: 1
+        })
+    });
+
+    /* Map points init */
+    var vectorSource = new ol.source.Vector({
+        wrapX: false,
+        noWrap: true
+    });
+    var markers = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+            image: new ol.style.Icon({
+                anchor: [0.5, 1],
+                src: '/public/images/marker.svg',
+                scale: 0.05,
+            })
+        })
+    });
+    map.addLayer(markers);
+
+    $.ajax({
+        type: "POST",
+        url: "/map/",
+        data: window.location.pathname.split("/").pop(),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        error: function (xhr, status, error) {
+            console.log("Error retrieving concerts data")
+        },
+        success: function (data) {
+            features = []
+            /* Map points populate */
+            for (const [key, location] of Object.entries(data)) {
+                features.push(new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([location["lon"], location["lat"]]))
+                }))
+
+                /* Create HTML popup and attach it */
+                datesHTML = "<div class='flex flex-wrap gap-x-2'>"
+                for (const date of location["Dates"]) {
+                    datesHTML += "<p class='pointer-events-none text-slate-800 dark:text-gray-200'>" + date + "</p>"
+                }
+                datesHTML += "</div>"
+
+                document.getElementById("popups").innerHTML += "<details id='location" + key + "' class='max-w-52 p-1.5 rounded-md cursor-default text-xs md:text-base text-bold text-indigo-800 dark:text-white bg-white dark:bg-indigo-950'><summary>" + location["name"] + "</summary>" + datesHTML + "</details>"
+
+                var container = document.getElementById("location" + key);
+                var overlay = new ol.Overlay({
+                    element: container,
+                    autoPan: true,
+                    autoPanAnimation: {
+                        duration: 250
+                    }
+                });
+                overlay.setPosition(ol.proj.fromLonLat([location["lon"], location["lat"]]));
+                map.addOverlay(overlay);
+            }
+            vectorSource.addFeatures(features)
+        }
+    });
+
+</script>
+
+{{ end }}

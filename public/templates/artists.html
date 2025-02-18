@@ -1,0 +1,20 @@
+{{ define "artists" }}
+<div id="artists" class="flex flex-wrap justify-center gap-5">
+    {{range .}}
+    <a href="/artist/{{.Id}}">
+        <div class="w-2xs rounded-xl overflow-hidden
+        shadow-lg dark:shadow-slate-800
+        bg-linear-0 from-indigo-100 to-purple-100 hover:from-purple-400 hover:outline-purple-700 hover:outline-2
+        dark:from-purple-950 dark:to-slate-950">
+            <img class="w-full" src={{.Image}}>
+            <div class="px-6 py-4 font-bold text-xl dark:text-white">{{.Name}}</div>
+            <div class="px-6 pb-2">
+                {{range .Members}}
+                <span class="inline-block bg-indigo-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mr-2 mb-2">{{.}}</span>
+                {{end}}
+            </div>
+        </div>
+    </a>
+    {{end}}
+</div>
+{{ end }}

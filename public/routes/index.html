@@ -1,0 +1,82 @@
+{{ define "index" }}
+{{ template "head" .}}
+<script src="/public/js/index.js"></script>
+</head>
+{{ template "header" .}}
+
+<div class="flex flex-col gap-3 md:gap-10 m-3">
+
+    <!-- search -->
+    <div class="sm:mx-40 lg:mx-80">
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="none"
+                    viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </div>
+            <input type="search" onkeyup="updateArtists()" id="search"
+                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search a name, album, date..." required />
+        </div>
+    </div>
+
+    <!-- filters -->
+    <div class="flex flex-wrap justify-center gap-3 md:gap-10">
+
+        <div class="">
+            <label id="memberCountLabel" class="block text-gray-700 text-sm md:text-base mb-2 dark:text-white">Member
+                count : No filter</label>
+            <input id="memberCount" onchange="updateArtists(); updateMemberCountUI(this.value)" type="range" value="0"
+                min="0" max="10" step="1"
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+        </div>
+
+        <div class="">
+            <label id="creationDateMinLabel" class="ml-24 text-gray-700 text-sm md:text-base dark:text-white">Creation
+                date</label>
+            <div class="flex items-center">
+                <p class="mx-3 text-gray-700 text-xs md:text-sm dark:text-white">From</p>
+                <input type="number" minlength="3" maxlength="4" id="creationDateMin" onkeyup="updateArtists()"
+                    class="block p-2 text-sm font-medium max-w-20 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <p class="mx-3 text-gray-700 text-xs md:text-sm dark:text-white">To</p>
+                <input type="number" minlength="4" maxlength="4" id="creationDateMax" onkeyup="updateArtists()"
+                    class="block p-2 text-sm font-medium max-w-20 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+            </div>
+        </div>
+
+        <div class="">
+            <label for="firstAlbum" id="firstAlbumLabel"
+                class="ml-24 text-gray-700 text-sm md:text-base dark:text-white">First Album</label>
+            <div class="flex items-center">
+                <p class="mx-3 text-gray-700 text-xs md:text-sm dark:text-white">From</p>
+                <input type="number" minlength="4" maxlength="4" id="firstAlbumMin" onkeyup="updateArtists()"
+                    class="block p-2 text-sm font-medium max-w-20 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <p class="mx-3 text-gray-700 text-xs md:text-sm dark:text-white">To</p>
+                <input type="number" minlength="4" maxlength="4" id="firstAlbumMax" onkeyup="updateArtists()"
+                    class="block p-2 text-sm font-medium max-w-20 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+            </div>
+        </div>
+
+
+        <div class="">
+            <form class="max-w-sm mx-auto">
+                <label class="text-gray-700 text-sm md:text-base dark:text-white">Concert location</label>
+                <select id="location" onchange="updateArtists()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option selected>Select ...</option>
+                </select>
+              </form>
+        </div>
+
+    </div>
+
+    {{ template "artists" .}}
+</div>
+
+
+{{ template "footer" .}}
+
+{{ end }}
