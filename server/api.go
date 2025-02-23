@@ -92,6 +92,21 @@ func getConcertCoordinates(artistId string) []coordinates {
 			fmt.Print(err.Error())
 		}
 
+		if string(responseData) == "[]" {
+			response, err := http.Get("https://nominatim.openstreetmap.org/search.php?q=" + location + "&format=jsonv2")
+			if err != nil {
+				fmt.Print(err.Error())
+			}
+			responseData, err = io.ReadAll(response.Body)
+			if err != nil {
+				fmt.Print(err.Error())
+			}
+
+			if string(responseData) == "[]" {
+				continue
+			}
+		}
+
 		var object []coordinates
 
 		json.Unmarshal(responseData, &object)
